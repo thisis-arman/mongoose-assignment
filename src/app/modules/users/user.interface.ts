@@ -6,9 +6,9 @@ export type users = {
     firstName: "string";
     lastName: "string";
   };
-  age: "number";
+  age: number;
   email: "string";
-  isActive: "boolean";
+  isActive: boolean;
   hobbies: ["string", "string"];
   address: {
     street: "string";
