@@ -1,7 +1,10 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import { createUserController } from "./user.controller";
 
-const userRouter = express.Router();
+const router = express.Router();
 
-userRouter.use("/api/v1/users");
+// router.use("/api/v1/users");
 
-userRouter.post("/create-user", (req: Request, res: Response) => {});
+router.post("/create-user", createUserController.createUser);
+
+export const userRoutes = router;
