@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { createUserServices } from "./user.service";
+import { UserServices } from "./user.service";
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body.users;
     console.log(user);
-    const userData = await createUserServices.createUserIntoDB(user);
+    const userData = await UserServices.createUserIntoDB(user);
     res.status(200).json({
       success: true,
       message: "User created successfully",
@@ -23,6 +23,49 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
+const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await UserServices.getUsersFromDB();
+    res.status(200).json({
+      success: true,
+      message: "Get All Users",
+      data: users,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "User not found",
+      error: {
+        code: 404,
+        description: "User not found!",
+      },
+    });
+  }
+};
+
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const singleUser = await UserServices.getSingleUserFromDb(userId);
+    res.status(200).json({
+      success: true,
+      message: "Get single User",
+      data: singleUser,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "User not found",
+      error: {
+        code: 404,
+        description: "User not found!",
+      },
+    });
+  }
+};
+
 export const createUserController = {
   createUser,
+  getAllUsers,
+  getSingleUser,
 };
