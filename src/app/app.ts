@@ -1,9 +1,9 @@
 import express, { Application, Request, Response } from "express";
-import cors from "cors";
+// import cors from "cors";
 import { userRoutes } from "./modules/users/user.route";
 const app: Application = express();
 
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
