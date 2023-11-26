@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 import { UserModel, TUsers } from "./user.interface";
 // import { string } from "zod";
 import bcrypt from "bcrypt";
+import config from "../../config";
 
 const userSchema = new Schema<TUsers, UserModel>({
   userId: {
@@ -75,10 +76,12 @@ const userSchema = new Schema<TUsers, UserModel>({
   ],
 });
 
-const saltRounds = 10;
 userSchema.pre("save", async function(this: TUsers, next) {
   // hashing password
-  this.password = await bcrypt.hash(this.password, Number(saltRounds));
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.bcrypt_salt_round)
+  );
   next();
 });
 
@@ -103,22 +106,6 @@ userSchema.pre("aggregate", function(next) {
   this.pipeline().unshift({ $match: { $isDeleted: { $ne: true } } });
   next();
 });
-// // delete password field when response
-// userSchema.methods.toJSON = function() {
-//   const obj = this.toObject();
-//   delete obj.password;
-//   return obj;
-// };
-//
-// userSchema.pre("save", async function(next) {
-//   // eslint-disable-next-line @typescript-eslint/no-this-alias
-//   const user = this.password;
-//   console.log("from pre this", this);
-//   user.password = await bcrypt.hash(user.password, saltRounds);
-//   next();
-// });
-
-// userSchema.post()
 
 userSchema.post("save", async function() {
   console.log("from post this", this);

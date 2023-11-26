@@ -11,7 +11,7 @@ export type TUsers = {
   age: number;
   email: string;
   isActive: boolean;
-  hobbies: [string, string];
+  hobbies: string[];
   address: {
     street: string;
     city: string;
@@ -20,13 +20,13 @@ export type TUsers = {
   isDeleted: boolean;
   orders?: Array<{
     productName: string;
-    price: "number";
-    quantity: "number";
+    price: number;
+    quantity: number;
   }>;
 };
 
 export interface UserModel extends Model<TUsers> {
-  isUserExists(userId: string): Promise<TUsers> | null;
+  isUserExists(userId: number): Promise<TUsers> | null;
 }
 
 // export type UserModel = Model<"TUsers", Record<string, never>, UserMethods>;
