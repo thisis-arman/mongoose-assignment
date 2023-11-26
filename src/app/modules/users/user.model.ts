@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { UserModel, TUsers } from "./user.interface";
-import { string } from "zod";
+// import { string } from "zod";
 import bcrypt from "bcrypt";
 
 const userSchema = new Schema<TUsers, UserModel>({
@@ -11,7 +11,6 @@ const userSchema = new Schema<TUsers, UserModel>({
   },
   password: {
     type: String,
-    unique: true,
     required: [true, "Password is required"],
   },
   username: {
@@ -43,7 +42,7 @@ const userSchema = new Schema<TUsers, UserModel>({
     required: [true, "isActive is required"],
   },
   hobbies: {
-    type: [String, String],
+    type: [String],
     required: [true, "Hobbies are required"],
   },
   address: {
@@ -77,16 +76,18 @@ const userSchema = new Schema<TUsers, UserModel>({
 });
 
 const saltRounds = 10;
-userSchema.pre("save", async function(next) {
-  const user = this;
+userSchema.pre("save", async function(this: TUsers, next) {
   // hashing password
-  user.password = await bcrypt.hash(user.password, Number(saltRounds));
+  this.password = await bcrypt.hash(this.password, Number(saltRounds));
   next();
 });
 
-userSchema.post("save", async function() {
-  this.password = "";
-});
+// delete password field when response
+userSchema.methods.toJSON = function() {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
 
 userSchema.pre("find", function(next) {
   this.find({ isDeleted: { $ne: true } });

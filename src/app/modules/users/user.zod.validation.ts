@@ -3,7 +3,7 @@ import { z } from "zod";
 const UserValidationSchema = z.object({
   userId: z.number(),
   username: z.string(),
-  password: z.string().max(20),
+  password: z.string(),
   fullName: z.object({
     firstName: z.string(),
     lastName: z.string(),
@@ -18,15 +18,26 @@ const UserValidationSchema = z.object({
     country: z.string(),
   }),
   isDeleted: z.boolean(),
+  orders: z
+    .array(
+      z.object({
+        productName: z.string(),
+        price: z.number(),
+        quantity: z.number(),
+      })
+    )
+    .optional(),
 });
 
 const orderSchema = z.object({
-  productName: z.string(),
-  price: z.number().nonnegative(),
-  quantity: z.number().positive(),
+  productName: z.string().min(1, { message: "Product Name is required" }),
+  price: z.number().positive({ message: "Price is required" }),
+  quantity: z.number().positive({ message: "Quantity is required" }),
 });
+
+const ordersSchema = z.array(orderSchema);
 
 export const userZodValidation = {
   UserValidationSchema,
-  orderSchema,
+  ordersSchema,
 };

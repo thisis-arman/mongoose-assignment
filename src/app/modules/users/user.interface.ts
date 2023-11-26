@@ -1,25 +1,25 @@
 import { Model } from "mongoose";
 
 export type TUsers = {
-  userId: "number";
-  username: "string";
-  password: "string";
+  userId: number;
+  username: string;
+  password: string;
   fullName: {
-    firstName: "string";
-    lastName: "string";
+    firstName: string;
+    lastName: string;
   };
   age: number;
-  email: "string";
+  email: string;
   isActive: boolean;
-  hobbies: ["string", "string"];
+  hobbies: [string, string];
   address: {
-    street: "string";
-    city: "string";
-    country: "string";
+    street: string;
+    city: string;
+    country: string;
   };
   isDeleted: boolean;
   orders?: Array<{
-    productName: "string";
+    productName: string;
     price: "number";
     quantity: "number";
   }>;
