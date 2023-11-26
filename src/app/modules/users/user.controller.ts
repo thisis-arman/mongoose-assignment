@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { UserServices } from "./user.service";
+import { userZodValidation } from "./user.zod.validation";
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body.users;
+    const zodParseData = userZodValidation.UserValidationSchema.parse(user);
     console.log(user);
-    const userData = await UserServices.createUserIntoDB(user);
+    const userData = await UserServices.createUserIntoDB(zodParseData);
     res.status(200).json({
       success: true,
       message: "User created successfully",
@@ -47,6 +49,7 @@ const getSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
     const singleUser = await UserServices.getSingleUserFromDb(userId);
+    console.log({ singleUser }, { userId });
     res.status(200).json({
       success: true,
       message: "Get single User",
@@ -67,12 +70,10 @@ const getSingleUser = async (req: Request, res: Response) => {
 // Update user profile
 const updatedUser = async (req: Request, res: Response) => {
   try {
-    const userId: string = req.params.userId;
-    const updatedData = req.body;
-    const updatedUser = await UserServices.updateUserIntoDB(
-      userId,
-      updatedData
-    );
+    const userId = req.params.userId;
+    const updateData = req.body;
+
+    const updatedUser = await UserServices.updateUserIntoDB(userId, updateData);
     res.status(200).json({
       success: true,
       message: "User updated successfully",
