@@ -19,12 +19,8 @@ export type TUsers = {
   };
 };
 
-export type UserMethods = {
-  isUserExists(userId: number): Promise<TUsers | null>;
-};
+export interface UserModel extends Model<TUsers> {
+  isUserExists(userId: string): Promise<TUsers> | null;
+}
 
-// export interface UserModel extends Model<Users> {
-//   isUserExists(userId: string): Promise<Users> | null;
-// }
-
-export type UsersModel = Model<"TUsers", Record<string, never>, UserMethods>;
+// export type UserModel = Model<"TUsers", Record<string, never>, UserMethods>;

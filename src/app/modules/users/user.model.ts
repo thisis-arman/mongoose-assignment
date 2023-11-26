@@ -1,21 +1,23 @@
 import { Schema, model } from "mongoose";
-// import bcrypt from "bcrypt";
-import { UsersModel, TUsers, UserMethods } from "./user.interface";
+import { UserModel, TUsers } from "./user.interface";
+import { string } from "zod";
+import bcrypt from "bcrypt";
 
-const userSchema = new Schema<TUsers, UsersModel, UserMethods>({
+const userSchema = new Schema<TUsers, UserModel>({
   userId: {
     type: Number,
     unique: true,
     required: [true, "UserId is required, and it must be a number"],
   },
+  password: {
+    type: String,
+    unique: true,
+    required: [true, "Password is required"],
+  },
   username: {
     type: String,
     unique: true,
     required: [true, "Username is required"],
-  },
-  password: {
-    type: String,
-    required: [true, "Password is required"],
   },
   fullName: {
     firstName: {
@@ -60,15 +62,13 @@ const userSchema = new Schema<TUsers, UsersModel, UserMethods>({
   },
 });
 
-// userSchema.pre("save", async function(next) {
-//   const user = this;
-//   // hashing password
-//   user.password = await bcrypt.hash(
-//     user.password,
-//     Number(process.env.bcrypt_salt_round)
-//   );
-//   next();
-// });
+const saltRounds = 10;
+userSchema.pre("save", async function(next) {
+  const user = this;
+  // hashing password
+  user.password = await bcrypt.hash(user.password, Number(saltRounds));
+  next();
+});
 
 // // delete password field when response
 // userSchema.methods.toJSON = function() {
@@ -76,11 +76,26 @@ const userSchema = new Schema<TUsers, UsersModel, UserMethods>({
 //   delete obj.password;
 //   return obj;
 // };
+//
+// userSchema.pre("save", async function(next) {
+//   // eslint-disable-next-line @typescript-eslint/no-this-alias
+//   const user = this.password;
+//   console.log("from pre this", this);
+//   user.password = await bcrypt.hash(user.password, saltRounds);
+//   next();
+// });
+
+// userSchema.post()
+
+userSchema.post("save", async function() {
+  console.log("from post this", this);
+});
 
 // user exist or not static method
-userSchema.methods.isUserExists = async function(userId: number) {
-  const existingUser = await userModel.findOne({ userId });
+userSchema.statics.isUserExists = async function(userId: number) {
+  const existingUser = await User.findOne({ userId });
+  console.log({ existingUser });
   return existingUser;
 };
 
-export const userModel = model<TUsers>("user", userSchema);
+export const User = model<TUsers, UserModel>("User", userSchema);

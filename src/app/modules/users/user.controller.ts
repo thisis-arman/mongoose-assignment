@@ -2,6 +2,10 @@ import { Request, Response } from "express";
 import { UserServices } from "./user.service";
 import { userZodValidation } from "./user.zod.validation";
 
+type Error = {
+  message: string;
+  details: string;
+};
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body.users;
@@ -14,13 +18,10 @@ const createUser = async (req: Request, res: Response) => {
       data: userData,
     });
   } catch (error) {
+    // console.log({ error });
     res.status(404).json({
       success: false,
-      message: "User not found",
-      error: {
-        code: 404,
-        description: "User not found!",
-      },
+      message: error.message || "User not found",
     });
   }
 };

@@ -1,33 +1,39 @@
 import { TUsers } from "./user.interface";
-import { userModel } from "./user.model";
+import { User } from "./user.model";
 
 const createUserIntoDB = async (userData: TUsers) => {
   // const userData = await userModel.create(user);
-  const user = new userModel(userData);
+  const userExists = await User.isUserExists(userData.userId);
+  console.log({ userExists });
+  if (userExists) {
+    throw new Error("User Already Exist");
+  }
+
+  const user = new User(userData);
   const result = await user.save();
-  console.log(result);
+  // console.log(result);
   return result;
 };
 
 const getUsersFromDB = async () => {
-  const users = await userModel
-    .find()
-    .select("username fullName age email address userId");
+  const users = await User.find().select(
+    "username fullName age email address userId"
+  );
   return users;
 };
 
 const getSingleUserFromDb = async (userId: number | string) => {
-  const singleUser = await userModel.find({ userId });
+  const singleUser = await User.find({ userId });
   return singleUser;
 };
 
 const updateUserIntoDB = async (userId: number, userData: TUsers) => {
-  const userExists = await userModel.isUserExists(userId);
+  const userExists = await User.isUserExists(userId);
   if (!userExists) {
     throw new Error("User not found");
   }
   console.log(userId, userData);
-  const result = await userModel.findOneAndReplace({ userId }, userData, {
+  const result = await User.findOneAndReplace({ userId }, userData, {
     new: true,
   });
 
@@ -35,7 +41,7 @@ const updateUserIntoDB = async (userId: number, userData: TUsers) => {
 };
 
 const deleteUserFromDB = async (userId: string) => {
-  const deleteUser = await userModel.deleteOne({ userId });
+  const deleteUser = await User.deleteOne({ userId });
   return deleteUser;
 };
 
@@ -47,12 +53,12 @@ const addOrderIntoDB = async (
     quantity: number;
   }
 ) => {
-  const userExists = await userModel.isUserExists(userId);
+  const userExists = await User.isUserExists(userId);
   if (!userExists) {
     throw new Error("User not found");
   }
   const { productName, price, quantity } = orderData;
-  await userModel.findOneAndUpdate(
+  await User.findOneAndUpdate(
     { userId, orders: { $exists: true } },
     { $push: { orders: { productName, price, quantity } } },
     { upsert: true, new: true }
@@ -62,11 +68,11 @@ const addOrderIntoDB = async (
 
 // get a user all orders
 const getAllOrdersFromDB = async (userId: string) => {
-  const userExists = await userModel.isUserExists(userId);
+  const userExists = await User.isUserExists(userId);
   if (!userExists) {
     throw new Error("User not found ");
   }
-  const result = await userModel.findOne({ userId }).select("orders");
+  const result = await User.findOne({ userId }).select("orders");
   return result;
 };
 
