@@ -17,6 +17,7 @@ export type TUsers = {
     city: "string";
     country: "string";
   };
+  isDeleted: boolean;
 };
 
 export interface UserModel extends Model<TUsers> {

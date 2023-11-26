@@ -41,7 +41,7 @@ const updateUserIntoDB = async (userId: number, userData: TUsers) => {
 };
 
 const deleteUserFromDB = async (userId: string) => {
-  const deleteUser = await User.deleteOne({ userId });
+  const deleteUser = await User.updateOne({ userId }, { isDeleted: true });
   return deleteUser;
 };
 

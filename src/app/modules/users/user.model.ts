@@ -60,6 +60,10 @@ const userSchema = new Schema<TUsers, UserModel>({
       required: [true, "Country is required"],
     },
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const saltRounds = 10;
@@ -70,6 +74,20 @@ userSchema.pre("save", async function(next) {
   next();
 });
 
+userSchema.pre("find", function(next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+userSchema.pre("findOne", function(next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+userSchema.pre("aggregate", function(next) {
+  this.pipeline().unshift({ $match: { $isDeleted: { $ne: true } } });
+  next();
+});
 // // delete password field when response
 // userSchema.methods.toJSON = function() {
 //   const obj = this.toObject();

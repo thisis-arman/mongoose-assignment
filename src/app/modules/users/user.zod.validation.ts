@@ -17,6 +17,7 @@ const UserValidationSchema = z.object({
     city: z.string(),
     country: z.string(),
   }),
+  isDeleted: z.boolean(),
 });
 
 export const userZodValidation = {
