@@ -57,6 +57,7 @@ const addOrderIntoDB = async (
   if (!userExists) {
     throw new Error("User not found");
   }
+
   const { productName, price, quantity } = orderData;
   await User.findOneAndUpdate(
     { userId, orders: { $exists: true } },

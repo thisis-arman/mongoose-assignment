@@ -112,6 +112,7 @@ const deletedUser = async (req: Request, res: Response) => {
     });
   }
 };
+
 export const createUserController = {
   createUser,
   getAllUsers,

@@ -18,6 +18,11 @@ export type TUsers = {
     country: "string";
   };
   isDeleted: boolean;
+  orders?: Array<{
+    productName: "string";
+    price: "number";
+    quantity: "number";
+  }>;
 };
 
 export interface UserModel extends Model<TUsers> {

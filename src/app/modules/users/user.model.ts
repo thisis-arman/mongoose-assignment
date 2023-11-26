@@ -64,6 +64,16 @@ const userSchema = new Schema<TUsers, UserModel>({
     type: Boolean,
     default: false,
   },
+  orders: [
+    {
+      productName: {
+        type: String,
+        required: [true, "Product Name is required"],
+      },
+      price: { type: Number, required: [true, "Price is required"] },
+      quantity: { type: Number, required: [true, "Quantity is required"] },
+    },
+  ],
 });
 
 const saltRounds = 10;
@@ -72,6 +82,10 @@ userSchema.pre("save", async function(next) {
   // hashing password
   user.password = await bcrypt.hash(user.password, Number(saltRounds));
   next();
+});
+
+userSchema.post("save", async function() {
+  this.password = "";
 });
 
 userSchema.pre("find", function(next) {

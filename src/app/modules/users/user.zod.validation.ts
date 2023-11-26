@@ -20,6 +20,13 @@ const UserValidationSchema = z.object({
   isDeleted: z.boolean(),
 });
 
+const orderSchema = z.object({
+  productName: z.string(),
+  price: z.number().nonnegative(),
+  quantity: z.number().positive(),
+});
+
 export const userZodValidation = {
   UserValidationSchema,
+  orderSchema,
 };
