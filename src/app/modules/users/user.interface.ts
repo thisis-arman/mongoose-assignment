@@ -1,6 +1,6 @@
 import { Model } from "mongoose";
 
-export type Users = {
+export type TUsers = {
   userId: "number";
   username: "string";
   password: "string";
@@ -19,6 +19,12 @@ export type Users = {
   };
 };
 
-export interface UserModel extends Model<Users> {
-  isUserExists(userId: string): Promise<Users> | null;
-}
+export type UserMethods = {
+  isUserExists(userId: number): Promise<TUsers | null>;
+};
+
+// export interface UserModel extends Model<Users> {
+//   isUserExists(userId: string): Promise<Users> | null;
+// }
+
+export type UsersModel = Model<"TUsers", Record<string, never>, UserMethods>;

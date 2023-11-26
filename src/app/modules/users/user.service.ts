@@ -1,7 +1,7 @@
-import { Users } from "./user.interface";
+import { TUsers } from "./user.interface";
 import { userModel } from "./user.model";
 
-const createUserIntoDB = async (userData: Users) => {
+const createUserIntoDB = async (userData: TUsers) => {
   // const userData = await userModel.create(user);
   const user = new userModel(userData);
   const result = await user.save();
@@ -21,20 +21,16 @@ const getSingleUserFromDb = async (userId: number | string) => {
   return singleUser;
 };
 
-const updateUserIntoDB = async (userId: number, userData: Users) => {
+const updateUserIntoDB = async (userId: number, userData: TUsers) => {
   const userExists = await userModel.isUserExists(userId);
   if (!userExists) {
     throw new Error("User not found");
   }
   console.log(userId, userData);
-  const result = await userModel.updateOne(
-    { userId },
-    { $set: userData },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const result = await userModel.findOneAndReplace({ userId }, userData, {
+    new: true,
+  });
+
   return result;
 };
 
