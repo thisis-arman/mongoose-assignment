@@ -17,7 +17,7 @@ export type TUsers = {
     city: string;
     country: string;
   };
-  isDeleted: boolean;
+  // isDeleted: boolean;
   orders?: Array<{
     productName: string;
     price: number;

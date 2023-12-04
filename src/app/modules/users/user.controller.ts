@@ -4,7 +4,7 @@ import { userZodValidation } from "./user.zod.validation";
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const user = req.body.users;
+    const user = req.body;
     const zodParseData = userZodValidation.UserValidationSchema.parse(user);
 
     const userData = await UserServices.createUserIntoDB(zodParseData);
@@ -17,7 +17,8 @@ const createUser = async (req: Request, res: Response) => {
     // console.log({ error });
     res.status(404).json({
       success: false,
-      message: "User not found",
+      message: "User not found !!! ghj",
+      details: error,
     });
   }
 };
@@ -33,10 +34,10 @@ const getAllUsers = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(404).json({
       success: false,
-      message: "User not found",
+      message: "User not found !!!",
       error: {
         code: 404,
-        description: "User not found!",
+        description: "User not found !!!!",
       },
     });
   }
@@ -55,10 +56,10 @@ const getSingleUser = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(404).json({
       success: false,
-      message: "User not found",
+      message: "User not found !!!",
       error: {
         code: 404,
-        description: "User not found!",
+        description: "User not found !!!!",
       },
     });
   }
@@ -82,7 +83,7 @@ const getSingleUser = async (req: Request, res: Response) => {
     console.log(error);
     res.status(404).json({
       success: false,
-      message: "User not found",
+      message: "User not found !!!",
       error: error,
     });
   }
@@ -130,10 +131,10 @@ const deletedUser = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(404).json({
       success: false,
-      message: "User not found",
+      message: "User not found !!!",
       error: {
         code: 404,
-        description: "User not found!",
+        description: "User not found !!!!",
       },
     });
   }
@@ -154,10 +155,10 @@ const insertOrder = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "User not found",
+      message: "User not found !!!",
       error: {
         code: 404,
-        description: "User not found!",
+        description: "User not found !!!!",
         error: error,
       },
     });
@@ -177,10 +178,10 @@ const getUserOrder = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "User not found",
+      message: "User not found !!!",
       error: {
         code: 404,
-        description: "User not found!",
+        description: "User not found !!!!",
         error: error,
       },
     });
@@ -202,10 +203,10 @@ const calculateUserOrder = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "User not found",
+      message: "User not found !!!",
       error: {
         code: 404,
-        description: "User not found!",
+        description: "User not found !!!!",
         error: error,
       },
     });

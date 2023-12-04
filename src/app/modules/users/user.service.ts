@@ -27,7 +27,7 @@ const getSingleUserFromDb = async (userId: number) => {
 };
 
 const updateUserIntoDB = async (userId: number, userData: TUsers) => {
-  console.log("receiving the data from sevices", { userId }, { userData });
+  console.log("receiving the data from services", { userId }, { userData });
   const userExists = await User.isUserExists(userId);
   if (!userExists) {
     throw new Error("User not found!!!!");
@@ -47,19 +47,6 @@ const updateUserIntoDB = async (userId: number, userData: TUsers) => {
   console.log("from 41 in services", { result });
   return result;
 };
-
-/* const updateUserIntoDB = async (userId: number, userData: TUsers) => {
-  const userExists = await User.isUserExists(userId);
-  if (!userExists) {
-    throw new Error("User not found!!!!");
-  }
-  console.log({ userId }, { userData });
-  console.log(userId, userData);
-  const result = await User.findOneAndUpdate({ userId }, userData, {
-    new: true,
-  });
-  return result;
-}; */
 
 const deleteUserFromDB = async (userId: number) => {
   const deleteUser = await User.updateOne({ userId }, { isDeleted: true });

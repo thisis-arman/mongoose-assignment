@@ -17,7 +17,7 @@ const UserValidationSchema = z.object({
     city: z.string(),
     country: z.string(),
   }),
-  isDeleted: z.boolean(),
+  // isDeleted: z.boolean(),
   orders: z
     .array(
       z.object({

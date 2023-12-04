@@ -60,10 +60,10 @@ const userSchema = new Schema<TUsers, UserModel>({
       required: [true, "Country is required"],
     },
   },
-  isDeleted: {
+  /*  isDeleted: {
     type: Boolean,
     default: false,
-  },
+  }, */
   orders: [
     {
       productName: {
